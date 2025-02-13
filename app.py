@@ -151,15 +151,23 @@ def tasks():
             taskAuthor = request.form.get('taskAuthor')
             authorID = models.getUserID(taskAuthor)
             models.addTask(taskName, authorID[0])
-            row = models.getTasksByUserID(UserID[0])
+            row = models.getTasksByName(taskAuthor)
+            flash("Задача успешно добавлена")
             return (render_template("tasks.html", AuthorArray = AuthorArray, TaskNameArray = TaskNameArray,context = content, headings = ("Номер записи","Текст","Автор","Выполнено"), data = row))
         if request.form['action'] == "Закрыть задачу":
             taskName = request.form.get('taskNameDropDown')
             models.updateTask(taskName)
-            row = models.getTasksByUserID(UserID[0])
+            row = models.getTasksByName(taskAuthor)
+            return (render_template("tasks.html", AuthorArray = AuthorArray, TaskNameArray = TaskNameArray, context = content, headings = ("Номер записи","Текст","Автор","Выполнено"), data = row))
+        if request.form['action'] == "Посмотреть задачи":
+            taskAuthor = request.form.get('taskAuthorInput')
+            row = models.getTasksByName(taskAuthor)
+            flash("Отображены задачи пользователя:" + taskAuthor)
             return (render_template("tasks.html", AuthorArray = AuthorArray, TaskNameArray = TaskNameArray, context = content, headings = ("Номер записи","Текст","Автор","Выполнено"), data = row))
 
+
 @app.route('/online')
+#@login_required
 def online():
     content = {}
     content ['username'] = []
@@ -170,6 +178,7 @@ def online():
         content ['username'] = username
         row = models.getOnline()
         flash ("Текущая роль - " + token_data.get('role'))
+        flash ("Доступ до страницы только для авторизованных пользователей!")
     else:
         row = models.getOnline()  
 

@@ -20,9 +20,9 @@ sql_create_users_table = """ CREATE TABLE IF NOT EXISTS "users" (
                             "online" datetime); """
 
 sql_insert_tasks_table = """INSERT INTO tasks (id, task_text, author, status) VALUES 
-                                        ('1', 'Открыть дверь холодильника', '1', 'False'),
-                                        ('2', 'Положить в холодильник слона', '1', 'False'),
-                                        ('3', 'Закрыть дверь холодильника', '1', 'False');
+                                        ('1', 'Открыть дверь холодильника', 'admin', 'False'),
+                                        ('2', 'Положить в холодильник слона', 'admin', 'False'),
+                                        ('3', 'Закрыть дверь холодильника', 'admin', 'False');
                                         """
 
 sql_insert_users_table = """INSERT INTO users (id, user, password) VALUES 
@@ -103,6 +103,21 @@ def getTasksByUserID(userID):
             conn.close()
             return row
 
+def getTasksByName(username):
+    row = ""
+    try:
+        conn=sqlite3.connect(db_file)
+        cur = conn.cursor()
+        a = str("SELECT * from tasks where author = '" + username + "';")
+        cur.execute(a)
+        row = cur.fetchall()
+    except Error as e:
+        print(e)
+    finally:
+        if conn:
+            conn.close()
+            return row
+
 def getOnline():
     row = ""
     try:
@@ -122,7 +137,7 @@ def addTask(taskName, taskAuthor):
     try:
         conn=sqlite3.connect(db_file)
         cur = conn.cursor()
-        a = 'INSERT INTO tasks (task_text, author, status) VALUES ("%s", "%s", "False");' %(taskName,taskAuthor[0])
+        a = "INSERT INTO tasks (task_text, author, status) VALUES (" + taskName + ", " + taskAuthor[0] + ", False);"
         cur.execute(a)
         row = cur.fetchall()
         conn.commit()
@@ -188,126 +203,3 @@ def getAuthors():
         if conn:
             conn.close()
         return _out
-
-
-
-
-
-#Продукты
-def getProduct(id):
-    conn=create_connection(db_file)
-    cur = conn.cursor()
-    cur.execute("SELECT * from products where id=?",(id))
-    row = cur.fetchall()
-    return row
-def getAllProducts():
-    conn = ""
-    try:
-       conn=sqlite3.connect(db_file)
-       cur = conn.cursor()
-       cur.execute("SELECT * from products")
-       row = cur.fetchall()
-       return row
-    except Error as e:
-       print(e)
-    finally:
-        if conn:
-            conn.close()
-
-#Корзина
-def getBasket(user):
-    conn=sqlite3.connect(db_file)
-    cur = conn.cursor()
-    cur.execute("SELECT * from bucket where user=?;",(user,))
-    row = cur.fetchall()
-    return row
-def insertProductsToBasket(user,product):
-    try:
-        conn = sqlite3.connect(db_file)
-        cur = conn.cursor()
-        cur.execute("INSERT into bucket (user,product) values (?,?);",(user,product))
-        row = cur.fetchall()
-        cur.execute("select * from bucket;")
-        row = cur.fetchall()
-        conn.commit()
-    except Error as e:
-        print(e)
-    finally:
-        if conn:
-            conn.close()
-def deleteProductsFromBasket(user):
-    try:
-        conn = sqlite3.connect(db_file)
-        cur = conn.cursor()
-        cur.execute("DELETE from bucket WHERE user = ?;",(user,))
-        row = cur.fetchall()
-        conn.commit()
-    except Error as e:
-        print(e)
-    finally:
-        if conn:
-            conn.close()
-
-#Заказы
-def insertOrder(user,datetime):
-    try:
-        conn = sqlite3.connect(db_file)
-        cur = conn.cursor()
-        cur.execute("INSERT into orders (data, user) values (?,?);",(datetime, user))
-        row = cur.fetchall()
-        conn.commit()
-    except Error as e:
-        print(e)
-    finally:
-        if conn:
-            conn.close()
-def getOrders():
-    conn=sqlite3.connect(db_file)
-    cur = conn.cursor()
-    cur.execute("SELECT * from orders;")
-    row = cur.fetchall()
-    return row
-
-
-#Пользователи
-def insertUser(user,password):
-    try:
-        conn = sqlite3.connect(db_file)
-        cur = conn.cursor()
-        cur.execute("INSERT into users(user,password) values (?,?);",(user,password))
-        row = cur.fetchall()
-        conn.commit()
-    except Error as e:
-        print(e)
-    finally:
-        if conn:
-            conn.close()
-
-def updateUser(user,password):
-    try:
-        conn = sqlite3.connect(db_file)
-        cur = conn.cursor()
-        cur.execute("UPDATE users SET password = ? WHERE user = ?;", (password,user))
-        row = cur.fetchall()
-        conn.commit()
-        return conn.total_changes
-    except Error as e:
-        print(e)
-    finally:
-        if conn:
-            conn.close()
-
-def updateOnline(user,datetime):
-    try:
-        conn = sqlite3.connect(db_file)
-        cur = conn.cursor()
-        cur.execute("UPDATE users SET online = ? WHERE user = ?;", (datetime,user))
-        row = cur.fetchall()
-        conn.commit()
-        return conn.total_changes
-    except Error as e:
-        print(e)
-    finally:
-        if conn:
-            conn.close()
-
