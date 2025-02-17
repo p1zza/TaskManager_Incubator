@@ -1,10 +1,9 @@
 #!/bin/bash
 
-echo "Start clean..."
-echo "Clean Application data"
+echo "Start checker"
 
-docker-compose -f compose.yaml down
-rm -r logs
+/usr/bin/python3 /home/orangepi/TaskManager_Incubator/gpio_checker.py
 
-docker-compose -f compose.yaml up -d
-echo "Finish clean..."
+
+
+echo "Finish checker"

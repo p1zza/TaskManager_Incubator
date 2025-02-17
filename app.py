@@ -167,7 +167,7 @@ def tasks():
 
 
 @app.route('/online')
-#@login_required
+@login_required
 def online():
     content = {}
     content ['username'] = []
