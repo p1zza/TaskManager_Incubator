@@ -131,6 +131,18 @@ def getOnline():
         if conn:
             conn.close()
             return row
+        
+def updateOnline(username, datetime):
+    try:
+        conn=sqlite3.connect(db_file)
+        cur = conn.cursor()
+        cur.execute('UPDATE "users" SET online = %s WHERE user = %s;' %(username, datetime))
+        conn.commit()
+    except Error as e:
+        print(e)
+    finally:
+        if conn:
+            conn.close()
 
 def addTask(taskName, taskAuthor):
     row = ""
