@@ -17,7 +17,7 @@ sql_create_users_table = """ CREATE TABLE IF NOT EXISTS "users" (
                             "id" integer PRIMARY KEY AUTOINCREMENT NOT NULL,
                             "user" text NOT NULL,
                             "password" text,
-                            "online" datetime); """
+                            "online" text); """
 
 sql_insert_tasks_table = """INSERT INTO tasks (id, task_text, author, status) VALUES 
                                         ('1', 'Открыть дверь холодильника', 'admin', 'False'),
@@ -136,7 +136,7 @@ def updateOnline(username, datetime):
     try:
         conn=sqlite3.connect(db_file)
         cur = conn.cursor()
-        cur.execute('UPDATE "users" SET online = %s WHERE user = %s;' %(username, datetime))
+        cur.execute('UPDATE "users" SET online = %s WHERE user = %s' %(datetime,username))
         conn.commit()
     except Error as e:
         print(e)
@@ -178,7 +178,7 @@ def getUser(user):
     try:
         conn = sqlite3.connect(db_file)
         cur = conn.cursor()
-        cur.execute("SELECT * from users where user = \'? \';" %(user))
+        cur.execute(f"SELECT * FROM users WHERE user =\'{user}\'")
         row = cur.fetchall()
     except Error as e:
         print(e)

@@ -72,7 +72,7 @@ def login():
                 content ['username'] = []
                 content ['username'] = username
                 UserId = models.getUserID(username)
-                models.updateOnline(username, datetime.datetime.now())
+                models.updateOnline(username, str(datetime.datetime.now().date()))
                 response = make_response(render_template("profile.html",context = content,cookies = request.cookies))
                 data = {"id": UserId, "user" : username, "password" : password, "role": "user"}
                 if username == "admin": 
