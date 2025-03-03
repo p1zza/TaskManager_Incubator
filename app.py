@@ -118,52 +118,60 @@ def profile():
 @app.route('/tasks',methods=['GET','POST'])
 @login_required
 def tasks():
-    content = {}
-    content ['username'] = []
-    token = request.cookies.get("jwt")
-    token_data = decodeJWT(token)
-    username = token_data.get('user')
-    content ['username'] = username    
-    UserID = models.getUserID(username)
-    UserID = UserID[0]
-    row = models.getTasksByUserID(UserID[0])
-    TaskNameArray = []
-    
-    if token_data.get('role') == 'admin':  
-        row = models.getTasks()
-    
-    
-    for name in row:
-        TaskNameArray.append(name[1])
-    
+
     AuthorArray = models.getAuthors()
-    
+    TaskNameArray = []
     if request.method == 'GET':
+        content = {}
+        content ['username'] = []
+        token = request.cookies.get("jwt")
+        token_data = decodeJWT(token)
+        username = token_data.get('user')
+        content ['username'] = username    
+        UserID = models.getUserID(username)
+        UserID = UserID[0]
+        row = models.getTasksByUserID(UserID[0])
+        
+    
+        if token_data.get('role') == 'admin':  
+            row = models.getTasks()
+        
+        
+        for name in row:
+            TaskNameArray.append(name[1])
+        
         if len(row) != 0:
-            return (render_template("tasks.html",AuthorArray = AuthorArray, TaskNameArray = TaskNameArray, context = content, headings = ("Номер записи","Текст","Автор","Выполнено"), data = row))
+            return (render_template("tasks.html",AuthorArray = AuthorArray, TaskNameArray = TaskNameArray, context = content, headings = ("Номер записи","Текст","Исполнитель","Выполнено"), data = row))
         else:
             flash ("Пользователь не имеет задач")
             return (render_template("tasks.html", AuthorArray = AuthorArray, TaskNameArray = TaskNameArray, context = content, headings = ("","","",""), data = row))
 
     if request.method == 'POST':
+        
         if request.form['action'] == 'Добавить задачу':
             taskName = str(request.form['taskNameInput'])
             taskAuthor = request.form.get('taskAuthor')
             authorID = models.getUserID(taskAuthor)
-            models.addTask(taskName, authorID[0])
+            models.addTask(taskName, taskAuthor)
             row = models.getTasksByName(taskAuthor)
-            flash("Задача успешно добавлена")
-            return (render_template("tasks.html", AuthorArray = AuthorArray, TaskNameArray = TaskNameArray,context = content, headings = ("Номер записи","Текст","Автор","Выполнено"), data = row))
+            for name in row:
+                TaskNameArray.append(name[1])
+            flash("Задача для пользователя - "+ taskAuthor + " - успешно добавлена")
+            return (render_template("tasks.html", AuthorArray = AuthorArray, TaskNameArray = TaskNameArray,headings = ("Номер записи","Текст","Исполнитель","Выполнено"), data = row))
         if request.form['action'] == "Закрыть задачу":
             taskName = request.form.get('taskNameDropDown')
             models.updateTask(taskName)
-            row = models.getTasksByName(taskAuthor)
-            return (render_template("tasks.html", AuthorArray = AuthorArray, TaskNameArray = TaskNameArray, context = content, headings = ("Номер записи","Текст","Автор","Выполнено"), data = row))
+            row = models.getTasksByName(taskName)
+            for name in row:
+                TaskNameArray.append(name[1])
+            return (render_template("tasks.html", AuthorArray = AuthorArray, TaskNameArray = TaskNameArray,headings = ("Номер записи","Текст","Исполнитель","Выполнено"), data = row))
         if request.form['action'] == "Посмотреть задачи":
             taskAuthor = request.form.get('taskAuthorInput')
             row = models.getTasksByName(taskAuthor)
+            for name in row:
+                TaskNameArray.append(name[1])
             flash("Отображены задачи пользователя:" + taskAuthor)
-            return (render_template("tasks.html", AuthorArray = AuthorArray, TaskNameArray = TaskNameArray, context = content, headings = ("Номер записи","Текст","Автор","Выполнено"), data = row))
+            return (render_template("tasks.html", AuthorArray = AuthorArray, TaskNameArray = TaskNameArray,headings = ("Номер записи","Текст","Исполнитель","Выполнено"), data = row))
 
 
 @app.route('/online')

@@ -149,10 +149,11 @@ def addTask(taskName, taskAuthor):
     try:
         conn=sqlite3.connect(db_file)
         cur = conn.cursor()
-        a = "INSERT INTO tasks (task_text, author, status) VALUES (" + taskName + ", " + taskAuthor[0] + ", False);"
-        cur.execute(a)
-        row = cur.fetchall()
+        cur.execute("INSERT INTO tasks (task_text, author, status) VALUES (?,?,False)",(taskName,taskAuthor))
         conn.commit()
+        #row = cur.fetchall()
+        res = cur.execute("SELECT task_text FROM tasks ")
+        out = res.fetchall()
     except Error as e:
         print(e)
     finally:
@@ -177,7 +178,7 @@ def getUser(user):
     try:
         conn = sqlite3.connect(db_file)
         cur = conn.cursor()
-        cur.execute("SELECT * from users where user=?",(user,))
+        cur.execute("SELECT * from users where user = \'? \';" %(user))
         row = cur.fetchall()
     except Error as e:
         print(e)
@@ -185,13 +186,26 @@ def getUser(user):
         if conn:
             conn.close()
             return row
+        
+def insertUser(user,password):
+    try:
+        conn = sqlite3.connect(db_file)
+        cur = conn.cursor()
+        cur.execute("INSERT into users(user,password) values (?,?);",(user,password))
+        row = cur.fetchall()
+        conn.commit()
+    except Error as e:
+        print(e)
+    finally:
+        if conn:
+            conn.close()
 
 def getUserID(user):
     row = ""
     try:
         conn = sqlite3.connect(db_file)
         cur = conn.cursor()
-        cur.execute("SELECT id from users where user=?",(user,))
+        cur.execute("SELECT id from users where user= ? ",(user,))
         row = cur.fetchall()
     except Error as e:
         print(e)
