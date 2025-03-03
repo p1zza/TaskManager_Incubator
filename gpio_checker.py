@@ -6,9 +6,6 @@ import time
 
 PORT = 11000
 host = '0.0.0.0'
-usernameArray = ['elPiniato','UnicornImagination', 'LongBeardedSheep', 'RomanticGiraffe', 'MrBalalaika', 'LadyFirework', 'GiantDandelion', 'SuperBaby', 'PenguinNutella', 'BatSlipper', 'CatFrankfurter', 'MoonRabbit', 'VirusCompilux', 'BraveRubiksCube', 'PrincessBooger', 'ZombieTomato', 'SantaSteel', 'DoctorPineappleJam']
-passwordArray = ['asd34dsa6','3ShGR9JmZ2',          'P7THgcm4bW',     'p6HwW8E7qa',       'hHBFYnrbV8',     'Tc3SZjCn2N', 'ebt2xaFqR8',  'Hx3XrpydsD',   'TFBZnqyNSa',   'pEsktzFKGM',   'WuAsZ29PHF',   'nzgeQJ6vtj',   'bK4FNWJ8CY',   'aCfm2HXUQG',   'hB56MUAVrd',       'tKJ7jGkEDd',       'YKHw3vUfTC','KVRmFPhf7B']
-
 
 loginurl = 'http://0.0.0.0:11000/login'
 logouturl ='http://0.0.0.0:11000/logout'
@@ -64,7 +61,7 @@ def ping():
 		i=0
 		while(i<4):
 			subprocess.run(["gpio -1 write 3 0"], shell=True)
-			time.sleep(1)
+			time.sleep(10)
 			subprocess.run(["gpio -1 write 3 1"], shell=True)
 			i+=1
 		
@@ -87,7 +84,7 @@ def check():
 		i=0
 		while(i <4):
 			subprocess.run(["gpio -1 write 5 0"], shell=True)
-			time.sleep(1)
+			time.sleep(10)
 			subprocess.run(["gpio -1 write 5 1"], shell=True)
 			i+=1
 
@@ -109,7 +106,7 @@ def check_sqlinj():
 		i=0
 		while(i <4):
 			subprocess.run(["gpio -1 write 7 0"], shell=True)
-			time.sleep(1)
+			time.sleep(10)
 			subprocess.run(["gpio -1 write 7 1"], shell=True)
 			i+=1
     
@@ -127,7 +124,7 @@ def check_online():
 		i=0
 		while(i<4):
 			subprocess.run(["gpio -1 write 8 0"], shell=True)
-			time.sleep(1)
+			time.sleep(10)
 			subprocess.run(["gpio -1 write 8 1"], shell=True)
 			i+=1
 

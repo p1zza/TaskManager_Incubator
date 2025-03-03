@@ -40,7 +40,7 @@
             {%endfor%}
         </table>
     </main>
-
+    <body>
     <div class = "AddTaskClass">
         <h1>Добавить задачу</h1>
         <form method="POST">
@@ -74,11 +74,9 @@
                 <input type="submit" value="Закрыть задачу" name = "action" />
             </p>
         </form>
-        </div>
-    <footer>
-
-        <div class = "WatchTaskClass">
-            <h1>Посмотреть задачи пользователя</h1>
+    </div>
+    <div class = "WatchTaskClass">
+        <h1>Посмотреть задачи пользователя</h1>
             <form method="POST">
                 <p>
                     <label for="taskAuthor" class="taskAuthor"> Автор задачи </label>
@@ -87,7 +85,8 @@
                     <input type="submit" value="Посмотреть задачи" name = "action" />
                 </form>
             </div>
-    
+        </body>
+    <footer>
         <div class="footer">&copy;<span> ИнкубаторУЭК - [TaskManager] </span></div>
     </footer>
 </html>
