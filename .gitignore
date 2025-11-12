@@ -3,3 +3,5 @@
 /db
 /~$skManager.docx
 db.db
+*.drawio
+*.docx
