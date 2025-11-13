@@ -15,6 +15,15 @@ RUN rm -rf /var/lib/apt/lists/* /var/cache/apt/archives/* && \
 
 COPY requirements.txt .
 
+RUN python3 -m pip install --upgrade pip && \
+    python3 -m pip install \
+    greenlet \
+    wheel \
+    -r requirements.txt \
+    --no-binary :all:
+
+COPY . .
+
 EXPOSE 11000
 
 CMD ["python", "app.py"]
