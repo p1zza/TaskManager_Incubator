@@ -17,10 +17,10 @@ mainurl = 'http://0.0.0.0:11000/'
 i = 0
 
 def init():
-	subprocess.run(["gpio export 6 out"], shell=True)
-	subprocess.run(["gpio export 7 out"], shell=True)
-	subprocess.run(["gpio export 8 out"], shell=True)
-	subprocess.run(["gpio export 9 out"], shell=True)
+	subprocess.run(["gpio export 28 out"], shell=True)
+	subprocess.run(["gpio export 49 out"], shell=True)
+	subprocess.run(["gpio export 48 out"], shell=True)
+	subprocess.run(["gpio export 50 out"], shell=True)
 
 
 def ping():
@@ -36,37 +36,37 @@ def ping():
 	    #Get-запрос на /чек выдает 500, если флаг не найден в локальной таблице
 	    #r8 = requests.get(f'http://{self.checker.host}:{PORT}/checker', timeout=3)
 	    
-		subprocess.run(["echo 1 > /sys/class/gpio/gpio6/value"], shell=True)
+		subprocess.run(["echo 1 > /sys/class/gpio/gpio28/value"], shell=True)
 		
 		if not "200" in str(r):
-			subprocess.run(["echo 0 > /sys/class/gpio/gpio6/value"], shell=True)
+			subprocess.run(["echo 0 > /sys/class/gpio/gpio28/value"], shell=True)
 		elif not "200" in str(r1):
-			subprocess.run(["echo 0 > /sys/class/gpio/gpio6/value"], shell=True)
+			subprocess.run(["echo 0 > /sys/class/gpio/gpio28/value"], shell=True)
 		elif  not "200" in str(r2):
-			subprocess.run(["echo 0 > /sys/class/gpio/gpio6/value"], shell=True)
+			subprocess.run(["echo 0 > /sys/class/gpio/gpio28/value"], shell=True)
 		elif not "200" in str(r3):
-			subprocess.run(["echo 0 > /sys/class/gpio/gpio6/value"], shell=True)
+			subprocess.run(["echo 0 > /sys/class/gpio/gpio28/value"], shell=True)
 		elif not "200" in str(r4):
-			subprocess.run(["echo 0 > /sys/class/gpio/gpio6/value"], shell=True)
+			subprocess.run(["echo 0 > /sys/class/gpio/gpio28/value"], shell=True)
 		elif not "200" in str(r5):
-			subprocess.run(["echo 0 > /sys/class/gpio/gpio6/value"], shell=True)
+			subprocess.run(["echo 0 > /sys/class/gpio/gpio28/value"], shell=True)
 		elif not "200" in str(r6):
-			subprocess.run(["echo 0 > /sys/class/gpio/gpio6/value"], shell=True)
+			subprocess.run(["echo 0 > /sys/class/gpio/gpio28/value"], shell=True)
 		else:
-			subprocess.run(["echo 1 > /sys/class/gpio/gpio6/value"], shell=True)
+			subprocess.run(["echo 1 > /sys/class/gpio/gpio28/value"], shell=True)
 	except Exception as e:
 		print(e)		
 		i=0
 		while(i<4):
-			subprocess.run(["echo 0 > /sys/class/gpio/gpio6/value"], shell=True)
+			subprocess.run(["echo 0 > /sys/class/gpio/gpio28/value"], shell=True)
 			time.sleep(10)
-			subprocess.run(["echo 1 > /sys/class/gpio/gpio6/value"], shell=True)
+			subprocess.run(["echo 1 > /sys/class/gpio/gpio28/value"], shell=True)
 			i+=1
 		
 
 def check():
 	try:
-		subprocess.run(["echo 1 > /sys/class/gpio/gpio7/value"], shell=True)
+		subprocess.run(["echo 1 > /sys/class/gpio/gpio49/value"], shell=True)
 
 		r = requests.post(loginurl, data = {'username': 'user', 'password' : 'password'}, timeout = 50)
 		dict_cookies = r.cookies.get_dict()
@@ -75,19 +75,19 @@ def check():
 		if "<li>Текущая роль - superAdmin</li>" in r.text:
 			None
 		else:
-			subprocess.run(["echo 0 > /sys/class/gpio/gpio7/value"], shell=True)
+			subprocess.run(["echo 0 > /sys/class/gpio/gpio49/value"], shell=True)
 	except Exception as e:
 		print(e)		
 		i=0
 		while(i <4):
-			subprocess.run(["echo 0 > /sys/class/gpio/gpio7/value"], shell=True)
+			subprocess.run(["echo 0 > /sys/class/gpio/gpio49/value"], shell=True)
 			time.sleep(10)
-			subprocess.run(["echo 1 > /sys/class/gpio/gpio7/value"], shell=True)
+			subprocess.run(["echo 1 > /sys/class/gpio/gpio49/value"], shell=True)
 			i+=1
 
 def check_sqlinj():
 	try:
-		subprocess.run(["echo 1 > /sys/class/gpio/gpio8/value"], shell=True)
+		subprocess.run(["echo 1 > /sys/class/gpio/gpio48/value"], shell=True)
 
 		r = requests.post(loginurl, data = {'username': 'user', 'password' : 'password'}, timeout = 50)
 		dict_cookies = r.cookies.get_dict()
@@ -96,31 +96,31 @@ def check_sqlinj():
 		if "HelloIAmAdmin" in r.text:
 			None
 		else:
-			subprocess.run(["echo 0 > /sys/class/gpio/gpio8/value"], shell=True)
+			subprocess.run(["echo 0 > /sys/class/gpio/gpio48/value"], shell=True)
 	except Exception as e:
 		print(e)
 		i=0
 		while(i <4):
-			subprocess.run(["echo 0 > /sys/class/gpio/gpio8/value"], shell=True)
+			subprocess.run(["echo 0 > /sys/class/gpio/gpio48/value"], shell=True)
 			time.sleep(10)
-			subprocess.run(["echo 1 > /sys/class/gpio/gpio8/value"], shell=True)
+			subprocess.run(["echo 1 > /sys/class/gpio/gpio48/value"], shell=True)
 			i+=1
     
 def check_online():
 	try:
-		subprocess.run(["echo 1 > /sys/class/gpio/gpio9/value"], shell=True)
+		subprocess.run(["echo 1 > /sys/class/gpio/gpio50/value"], shell=True)
 		r = requests.get(onlineurl, cookies = {}, data = "")
 		if "<li>Добро пожаловать: []</li>" in r.text:
 			None
 		else:
-			subprocess.run(["echo 0 > /sys/class/gpio/gpio9/value"], shell=True)
+			subprocess.run(["echo 0 > /sys/class/gpio/gpio50/value"], shell=True)
 	except Exception as e:
 		print(e)		
 		i=0
 		while(i<4):
-			subprocess.run(["echo 0 > /sys/class/gpio/gpio9/value"], shell=True)
+			subprocess.run(["echo 0 > /sys/class/gpio/gpio50/value"], shell=True)
 			time.sleep(10)
-			subprocess.run(["echo 1 > /sys/class/gpio/gpio9/value"], shell=True)
+			subprocess.run(["echo 1 > /sys/class/gpio/gpio50/value"], shell=True)
 			i+=1
 
 if __name__ == '__main__':
