@@ -1,3 +1,3 @@
 
-python3 /home/orangepi/TaskManager_Incubator/gpio_checker.py >> /home/orangepi/TaskManager_Incubator/logs.log
+python3 /root/TaskManager_Incubator/gpio_checker.py >> /root/TaskManager_Incubator/logs.log
 
