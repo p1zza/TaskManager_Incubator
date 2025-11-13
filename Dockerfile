@@ -3,14 +3,14 @@ FROM python:${PYTHON_VERSION}-slim as base
 
 WORKDIR /app
 
-RUN rm -rf /var/lib/apt/lists/* /var/cache/apt/archives/* && \
-    apt-get update && \
+RUN apt-get update && \
     apt-get install -y --no-install-recommends \
         ca-certificates \
         gcc \
         g++ \
-        python3-dev && \
-    apt-key adv --refresh-keys --keyserver keyserver.ubuntu.com || true && \
+        python3-dev \
+        libffi-dev \
+        libssl-dev && \
     rm -rf /var/lib/apt/lists/* /var/cache/apt/archives/*
 
 COPY requirements.txt .
